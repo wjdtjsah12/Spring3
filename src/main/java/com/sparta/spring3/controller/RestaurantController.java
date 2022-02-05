@@ -22,8 +22,8 @@ public class RestaurantController {
 
 
     // 음식점 조회
-    @GetMapping("/restaurant")
-    public List<Restaurant> getRestaurant(){
+    @GetMapping("/restaurants")
+    public List<Restaurant> getRestaurants(){
         return restaurantRepository.findAll();
     }
 
