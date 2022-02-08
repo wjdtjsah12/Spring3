@@ -1,10 +1,12 @@
 package com.sparta.spring3.model;
 
-import com.sparta.spring3.dto.RestaurantDto;
+import com.sparta.spring3.dto.RestaurantResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
+
 
 @Getter
 @NoArgsConstructor
@@ -26,10 +28,13 @@ public class Restaurant {
     @Column(nullable = false)
     private int deliveryFee;
 
-    public Restaurant(RestaurantDto restaurantDto){
-        this.name = restaurantDto.getName();
-        this.minOrderPrice = restaurantDto.getMinOrderPrice();
-        this.deliveryFee = restaurantDto.getDeliveryFee();
+    @OneToMany(mappedBy = "restaurant")
+    private List<Food> foodList;
+
+    public Restaurant(RestaurantResponseDto requestDto){
+        this.name = requestDto.getName();
+        this.minOrderPrice = requestDto.getMinOrderPrice();
+        this.deliveryFee = requestDto.getDeliveryFee();
     }
 
 }
