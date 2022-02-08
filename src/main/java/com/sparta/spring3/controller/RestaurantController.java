@@ -1,5 +1,6 @@
 package com.sparta.spring3.controller;
 
+import com.sparta.spring3.dto.RestaurantRequestDto;
 import com.sparta.spring3.dto.RestaurantResponseDto;
 import com.sparta.spring3.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class RestaurantController {
 
     // 음식점 등록 처리
     @PostMapping("/restaurant/register")
-    public RestaurantResponseDto registerRestaurant(@RequestBody RestaurantResponseDto requestDto) {
-        return restaurantService.registerRestaurant(requestDto);
+    public RestaurantResponseDto registerRestaurant(@RequestBody RestaurantRequestDto restaurantDto) {
+        return restaurantService.registerRestaurant(restaurantDto);
     }
 }
