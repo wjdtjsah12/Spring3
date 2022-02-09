@@ -1,7 +1,8 @@
 package com.sparta.spring3.controller;
 
-import com.sparta.spring3.dto.RestaurantRequestDto;
-import com.sparta.spring3.dto.RestaurantResponseDto;
+import com.sparta.spring3.dto.RestaurantDto;
+import com.sparta.spring3.model.Restaurant;
+import com.sparta.spring3.repository.RestaurantRepository;
 import com.sparta.spring3.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +19,19 @@ import java.util.List;
 // JSON 형태로 객체 데이터를 반환하는 컨트롤러에 사용하는 어노테이션
 public class RestaurantController {
 
+    private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
 
 
     // 음식점 조회
     @GetMapping("/restaurants")
-    public List<RestaurantResponseDto> getRestaurants() {
-        return restaurantService.getRestaurants();
+    public List<Restaurant> getRestaurants() {
+        return restaurantRepository.findAll();
     }
 
     // 음식점 등록 처리
     @PostMapping("/restaurant/register")
-    public RestaurantResponseDto registerRestaurant(@RequestBody RestaurantRequestDto restaurantDto) {
+    public Restaurant registerRestaurant(@RequestBody RestaurantDto restaurantDto) {
         return restaurantService.registerRestaurant(restaurantDto);
     }
 }

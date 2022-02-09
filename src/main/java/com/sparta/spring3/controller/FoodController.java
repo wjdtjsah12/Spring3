@@ -1,31 +1,45 @@
 package com.sparta.spring3.controller;
 
-import com.sparta.spring3.dto.FoodRequestDto;
-import com.sparta.spring3.dto.FoodResponseDto;
+import com.sparta.spring3.dto.FoodDto;
+import com.sparta.spring3.model.Food;
 import com.sparta.spring3.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-// 의존성 주입을 위한 어노테이션, 생성자 주입이라고 한다.
-// 추가작업을 필요로 하는 필드에 생성자를 생성하는 어노테이션
 @RestController
-// JSON 형태로 객체 데이터를 반환하는 컨트롤러에 사용하는 어노테이션
 public class FoodController {
-
     private final FoodService foodService;
 
-    // 메뉴판 조회
     @GetMapping("/restaurant/{restaurantId}/foods")
-    public List<FoodResponseDto> getFoods(@PathVariable Long restaurantId){
-        return foodService.getFoods(restaurantId);
+    public List<Food> getFood(@PathVariable Long restaurantId){
+        return foodService.getFood(restaurantId);
     }
 
-    // 음식 등록
     @PostMapping("/restaurant/{restaurantId}/food/register")
-    public void createFood(@PathVariable Long restaurantId, @RequestBody List<FoodRequestDto> requestDto){
-        foodService.createFood(restaurantId, requestDto);
+    public List<FoodDto> createFood(@RequestBody List<FoodDto> foodDtos,
+                                    @PathVariable Long restaurantId) throws Exception {
+        List<String> foodNames = new ArrayList<String>();
+        for(FoodDto foodDto : foodDtos){
+            foodNames.add(foodDto.getName());
+        }
+
+        // 리스트 내 중복체크
+        if(foodNames.size() != foodNames.stream().distinct().count()){
+            // stream 클래스의 함수 distinct는 중복을 제거합니다.
+            // stream 종결함수 count는 원소 갯수를 카운트해서 long 타입으로 리턴합니다.
+            throw new Exception("중복되는 메뉴가 존재합니다.");
+        }
+
+        for(FoodDto foodDto : foodDtos){
+            int found = foodService.createFood(foodDto, restaurantId);
+            if(found != 0){
+                break;
+            }
+        }
+        return null;
     }
 }

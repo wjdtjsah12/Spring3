@@ -1,30 +1,35 @@
 package com.sparta.spring3.service;
 
-import com.sparta.spring3.dto.RestaurantRequestDto;
-import com.sparta.spring3.dto.RestaurantResponseDto;
+import com.sparta.spring3.dto.RestaurantDto;
 import com.sparta.spring3.model.Restaurant;
 import com.sparta.spring3.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantResponseDto registerRestaurant(RestaurantRequestDto restaurantDto){
+    @Autowired
+    public RestaurantService(RestaurantRepository restaurantRepository){
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    public Restaurant registerRestaurant(RestaurantDto restaurantDto){
         // 음식점 유효성 검사
         validCheck(restaurantDto);
 
         // 통과 후 가게 등록 진행
-        Restaurant restaurant = restaurantRepository.save(new Restaurant(restaurantDto));
-        return new RestaurantResponseDto(restaurant);
+        Restaurant restaurant = new Restaurant(restaurantDto);
+        restaurantRepository.save(restaurant);
+        return restaurant;
     }
 
-    private void validCheck(RestaurantRequestDto restaurantDto) {
+    private void validCheck(RestaurantDto restaurantDto) {
         int minOrderPriceCheck = restaurantDto.getMinOrderPrice();
         int deliveryFeeCheck = restaurantDto.getDeliveryFee();
 
@@ -38,15 +43,5 @@ public class RestaurantService {
         }else if(deliveryFeeCheck % 500 != 0){
             throw new IllegalArgumentException("기본 배달비는 500원 단위만 설정 가능합니다.");
         }
-    }
-
-    public List<RestaurantResponseDto> getRestaurants() {
-        // 모든 음식적 목록 출력 메소드
-        List <Restaurant> restaurantList = restaurantRepository.findAll();
-        List<RestaurantResponseDto> response = new ArrayList<>();
-        for(Restaurant restaurant : restaurantList){
-            response.add(new RestaurantResponseDto(restaurant));
-        }
-        return response;
     }
 }
