@@ -1,12 +1,12 @@
 package com.sparta.spring3.model;
 
-import com.sparta.spring3.dto.FoodRequestDto;
+
+import com.sparta.spring3.dto.FoodDto;
+import com.sparta.spring3.dto.RestaurantDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -16,24 +16,21 @@ public class Food {
     @Id
     private Long id;
 
+    // 해당 음식의 음식점 아이디는 반드시 입력
     @Column(nullable = false)
-    private String foodName;
+    private Long restaurantId;
 
+    // 음식 이름은 반드시 입력
+    @Column(nullable = false)
+    private String name;
+
+    // 음식 가격은 반드시 입력
     @Column(nullable = false)
     private int price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private Restaurant restaurant;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    List<FoodOption> foodOptionList = new ArrayList<>();
-
-
-    public Food(Restaurant restaurant, FoodRequestDto requestDto, List<FoodOption> foodOptionList){
-        this.foodName = requestDto.getFoodName();
+    public Food(FoodDto requestDto, Long restaurantId){
+        this.name = requestDto.getName();
         this.price = requestDto.getPrice();
-        this.restaurant = restaurant;
-        this.foodOptionList = foodOptionList;
+        this.restaurantId = restaurantId;
     }
 }
