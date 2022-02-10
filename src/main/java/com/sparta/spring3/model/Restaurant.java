@@ -27,6 +27,7 @@ public class Restaurant {
     @Column(nullable = false)
     private int deliveryFee;
 
+    // RestaurantDto 타입 매개변수 일때 생성자
     public Restaurant(RestaurantDto requestDto){
         this.name = requestDto.getName();
         this.minOrderPrice = requestDto.getMinOrderPrice();

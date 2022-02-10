@@ -14,6 +14,7 @@ public class FoodService {
     private final FoodRepository foodRepository;
 
     public List<Food> getFood(Long restaurantId) {
+        // FindAllBy Return 타입은 List<Food>
         return foodRepository.findAllByRestaurantId(restaurantId);
     }
 
@@ -21,7 +22,7 @@ public class FoodService {
         String name = requestDto.getName();
         int price = requestDto.getPrice();
         List<Food> found = foodRepository.findAllByRestaurantIdAndName(restaurantId, name);
-
+        // found 배열이 비어있지 않을때 == 0이 아닌 1이상일때는 Exception throw
         if(found.size() != 0){
             throw new Exception("중복되는 메뉴가 존재합니다.");
         }else if(price < 100 || price > 1000000){
@@ -30,9 +31,11 @@ public class FoodService {
             throw new Exception("100원 단위로 입력해주세요.");
         }
 
+        // 조건식 통과 시 해당 음식 DB에 추가합니다.
         Food food = new Food(requestDto, restaurantId);
         foodRepository.save(food);
 
+        // 조건식 검사를 위해 found의 size return
         return found.size();
 
     }

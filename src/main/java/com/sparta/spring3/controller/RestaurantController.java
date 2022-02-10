@@ -18,15 +18,13 @@ import java.util.List;
 @RestController
 // JSON 형태로 객체 데이터를 반환하는 컨트롤러에 사용하는 어노테이션
 public class RestaurantController {
-
-    private final RestaurantRepository restaurantRepository;
     private final RestaurantService restaurantService;
 
 
-    // 음식점 조회
+    // 모든 음식점 조회
     @GetMapping("/restaurants")
     public List<Restaurant> getRestaurants() {
-        return restaurantRepository.findAll();
+        return restaurantService.getRestaurants();
     }
 
     // 음식점 등록 처리

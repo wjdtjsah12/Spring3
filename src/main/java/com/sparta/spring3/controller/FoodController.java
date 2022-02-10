@@ -22,7 +22,7 @@ public class FoodController {
     @PostMapping("/restaurant/{restaurantId}/food/register")
     public List<FoodDto> createFood(@RequestBody List<FoodDto> foodDtos,
                                     @PathVariable Long restaurantId) throws Exception {
-        List<String> foodNames = new ArrayList<String>();
+        List<String> foodNames = new ArrayList<>();
         for(FoodDto foodDto : foodDtos){
             foodNames.add(foodDto.getName());
         }

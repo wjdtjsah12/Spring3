@@ -2,7 +2,6 @@ package com.sparta.spring3.model;
 
 
 import com.sparta.spring3.dto.FoodDto;
-import com.sparta.spring3.dto.RestaurantDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
